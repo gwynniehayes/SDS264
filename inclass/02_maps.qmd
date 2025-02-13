@@ -2,7 +2,7 @@
 title: "Creating informative maps"
 sidebar: false
 format:
-  html: default
+  pdf: default
 editor_options: 
   chunk_output_type: console
 ---
@@ -152,7 +152,7 @@ vacc_mar13 |>
   labs(fill = "People Vaccinated\nper 100 pop.") +
   coord_map() +  #<1>
   theme_void() +  #<2>
-  scale_fill_viridis()  #<3>
+  scale_fill_viridis(option = "turbo")  #<3>
 ```
 
 1. This scales the longitude and latitude so that the shapes look correct.  coord_quickmap() can also work here - it's less exact but faster.
@@ -254,7 +254,8 @@ For instance, here is a really simple plot with a pop-up window:
 library(leaflet)
 
 leaflet() |> 
-  addTiles() |>   #<1>
+  addTiles() |> 
+  addProviderTiles(" Stamen.Watercolor") |> #<1>
   setView(-93.1832, 44.4597, zoom = 17) |>   #<2>
   addPopups(-93.1832, 44.4597, 'Here is the <b>Regents Hall of Mathematical Sciences</b>, home of the Statistics and Data Science program at St. Olaf College')   #<3>
 ```
@@ -288,8 +289,9 @@ leaflet() |>
         radius = ~ S_Accomodates,  
         # These last options describe how the circles look
         weight = 2,
-        color = "red", 
-        fillColor = "yellow")
+        color = "magenta", 
+        fillColor = "navy") |>
+    addProviderTiles("Esri.WorldImagery")
 ```
 
 **[Pause to ponder:]** List similarities and differences between leaflet plots and ggplots.
@@ -368,19 +370,19 @@ leaflet(states) |>
     fillColor = ~pal(density),
     weight = 2,
     opacity = 1,
-    color = "white",
+    color = "purple",
     dashArray = "3",
     fillOpacity = 0.7,
     highlightOptions = highlightOptions(
       weight = 5,
-      color = "#666",
+      color = "#925",
       dashArray = "",
       fillOpacity = 0.7,
       bringToFront = TRUE),
     label = labels,
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
-      textsize = "15px",
+      textsize = "42px",
       direction = "auto")) |>
   addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
     position = "bottomright")
@@ -444,19 +446,34 @@ R code hints:
 ```{r}
 # Make sure all keys have the same format before joining:
 #   all lower case, no internal or external spaces
+states_polygon <- states_polygon |>
+  mutate(region = str_replace_all(region, " ", ""))
 
+states_sf <- states_sf |>
+  mutate(name = str_to_lower(name),
+         name = str_replace_all(name, " ", "")) 
+polisci_data <- polisci_data |>
+  mutate(state = str_to_lower(str_squish(state)))
+  
 ```
 
 ```{r}
 # Now we can merge data sets together for the static and the interactive plots
+polisci_polygon <- states_polygon |> 
+  left_join(polisci_data, by = c("region" = "state"))
 
+polisci_polygon
 
 # Merge with states_polygon (static)
 
 # Check that merge worked for 48 contiguous states
 
-
+polisci_polygon |>
+  distinct(region)
 # Merge with states_sf (static or interactive)
+
+polisci_interactive <- states_sf |>
+  left_join(polisci_data, by = c("name" = "state"))
 
 # Check that merge worked for 48 contiguous states
 
@@ -473,6 +490,19 @@ Numeric variable (static plot):
 Numeric variable (interactive plot):
 
 ```{r}
+leaflet(polisci_interactive) |>
+setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal(carfatal07),
+    weight = 2,
+    opacity = 1,
+    color = "purple",
+    dashArray = "3",
+    fillOpacity = 0.7)
+
+
+
 # it's okay to skip a legend here
 ```
 
