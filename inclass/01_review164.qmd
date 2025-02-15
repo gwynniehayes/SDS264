@@ -17,7 +17,8 @@ library(ggplot2)
 
 ```{r}
 #| eval: false
-vaccine_data <- read_csv("~/Desktop/15/SDS264/data/vaccinations_2021.csv")  #<2>
+
+vaccine_data <- read_csv("~/Desktop/15/SDS264/data/vaccinations_2021.csv", show_col_types = FALSE)
 ```
 
 A recent Stat 272 project examined determinants of covid vaccination rates at the county level.  Our data set contains 3053 rows (1 for each county in the US) and 14 columns; here is a quick description of the variables we'll be using:
