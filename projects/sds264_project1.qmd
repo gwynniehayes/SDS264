@@ -1,0 +1,92 @@
+---
+title: "SDS264_project1"
+format: pdf
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+Overview You will produce choropleth maps illustrating two different characteristics – one numeric and one categorical – that have been measured for each US state (you can choose to exclude Alaska and Hawaii), like we did in the “Creating Informative Maps” activity. Just as we found state-level data from both a vaccine data set and the poliscidata package, you should find your own state-level data that is interesting to you.
+
+A few additional details for this mini-project:
+
+You should create two versions of each plot – one that is static and one that is interactive.
+
+Be sure to include a note on your plots with your data source.
+
+You should be able to merge your state-level data with the state mapping data sets we used in class.
+
+Be sure you label your plot well and provide a description of what insights can be gained from each static plot. For one of your static plots, this should be in the form of alt-text, using the “Four Ingredient Model” in the article from class.
+
+Check out this rubric for Mini-Project 1.
+
+Submission and Timeline Mini-Project 1 must be submitted on Moodle by 11:00 PM on Fri Feb 21. You should submit your two static plots, along with descriptions and alt-text, in a pdf document. For your interactive plots, just submit a GitHub link where I can see your code that would produce a nice html document. Then, in Mini-Project 2, I will ask you to build a webpage where you will link to these interactive html pages.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(tidygeocoder)
+
+frogobs <- read.csv("~/Desktop/15/SDS264/data/frogobs.csv")
+
+frogobs <- frogobs |>
+  dplyr::select(-c("private_place_guess", "private_latitude", "positional_accuracy", "private_longitude", "geoprivacy", "uuid", "observed_on_string"))
+
+notoads <- frogobs |>
+  filter(!grepl("Toad", common_name))
+```
+
+
+```{r}
+frogstates <- notoads |>
+  reverse_geocode(lat = latitude, long = longitude, method = "osm") 
+
+
+#write.csv(frogobsstates, "frogobs_with_states.csv", row.names = FALSE)
+
+```
+
+```{r}
+leaflet() |>
+    addTiles() |>
+    setView(lng = mean(frogobs$longitude), lat = mean(frogobs$latitude), 
+            zoom = 3) |> 
+    addCircleMarkers(data = frogobs,
+        lat = ~ latitude, 
+        lng = ~ longitude)
+```
+
+```{r}
+frogobs |>
+  ggplot(mapping = aes(x = longitude, y = latitude)) + 
+  geom_polygon(aes(fill = species), color = "darkgrey", linewidth = 0.2) + 
+  labs(fill = "Governor") +
+  coord_map() + 
+  theme_void() +  
+  scale_fill_manual(values = c("blue", "red")) #<1>
+```
+
+for getting state names in this data set
+
+idea create a new variable that i the latitude that corresponds to the specific state first make a new lat column thats been truncated
+
+```{r}
+frogobs_states <- frogobs |>
+  select(c("latitude", "longitude", "place_guess")) |>
+  mutate(lat = trunc(latitude), long = trunc(longitude),
+                state = ifelse(lat >= 25 & lat <= 36 & long <= -97 & long >= -104, "Texas",
+                        ifelse(lat >= 39 & lat <= 42 & long <= -85 & long <= -88, "Indiana", 
+                        ifelse(lat >= 31 & lat <= 33 & long <= -109 & long >= -112, "Arizona", 
+                        ifelse(lat >= 46 & lat <= 48 & long <= -123 & long >= -124, "Washington",
+                        ifelse(lat >= 43 & lat <= 48 & long <= -97 & long >= -104 , "Maine",
+                        ifelse(lat >= 47 & lat <= 50 & long <= -104 & long >= -116, "Montana", 
+                        ifelse(lat >= 37 & lat <= 42 & long <= -87 & long >= -91, "Illinois",
+                        ifelse(lat >= 43 & lat <= 49 & long <= -90 & long >= -97, "Minnesota",
+                        ifelse(lat >= 40 & lat <= 43 & long <= -95 & long >= -104, "Nebraska",
+                        ifelse(lat >= 37 & lat <= 39 & long <= -76 & long >= -83, "Virgina", "Other")))))))))))
+```
+
+```{r}
+frogobs_states |>
+    count(state, lat, long)
+```

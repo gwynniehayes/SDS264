@@ -57,8 +57,6 @@ For example, let's consider state vaccination data from March 2021.
 #| message: false
 #| warning: false
 
-
-
 vaccines <- read_csv("https://joeroith.github.io/264_spring_2025/Data/vacc_Mar21.csv") 
 
 vacc_mar13 <- vaccines |>
@@ -103,7 +101,7 @@ vacc_mar13 |>
   right_join(us_states, by = c("State" = "region")) |>
   rename(region = State) |>
   ggplot(mapping = aes(x = long, y = lat,
-                          group = group)) + 
+                       group = group)) + 
   geom_polygon(aes(fill = people_vaccinated_per100), color = "black")
 ```
 
