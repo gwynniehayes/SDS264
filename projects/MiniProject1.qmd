@@ -1,6 +1,6 @@
 ---
 title: "Mini Project 1"
-format: pdf
+format: html
 editor: visual
 author: Gwynnie Hayes
 editor_options: 
