@@ -36,7 +36,6 @@ notoads <- frogobs |>
   filter(!grepl("Toad", common_name))
 ```
 
-
 ```{r}
 frogstates <- notoads |>
   reverse_geocode(lat = latitude, long = longitude, method = "osm") 
