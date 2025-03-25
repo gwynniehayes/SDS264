@@ -1,0 +1,12 @@
+name: miniproject1interactive
+title: MiniProject1Interactive
+username: hayes5
+account: hayes5
+server: rconnect.stolaf.edu
+hostUrl: https://rconnect.stolaf.edu/__api__
+appId: 849
+bundleId: 2246
+url: https://rconnect.stolaf.edu/content/c14ffc4e-c8ed-4bc2-9a4e-618a38d8af46/
+version: 1
+asMultiple: FALSE
+asStatic: TRUE

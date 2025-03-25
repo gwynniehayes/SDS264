@@ -1,0 +1,12 @@
+name: rtotd
+title: RTOTD
+username: hayes5
+account: hayes5
+server: rconnect.stolaf.edu
+hostUrl: https://rconnect.stolaf.edu/__api__
+appId: 861
+bundleId: 2278
+url: https://rconnect.stolaf.edu/content/6fa555cd-38a5-4dc9-bea4-0fc209f198c2/
+version: 1
+asMultiple: FALSE
+asStatic: TRUE

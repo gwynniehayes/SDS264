@@ -3,6 +3,7 @@ title: "Mini Project 1 Interactive Maps"
 format: html
 editor: visual
 author: Gwynnie Hayes
+html: default
 editor_options: 
   chunk_output_type: console
 ---
