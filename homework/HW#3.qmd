@@ -1,0 +1,104 @@
+---
+title: "HW #3"
+author: "Gwynyn Hayes"
+format: pdf
+editor: visual
+---
+
+07_apis.qmd: On Your Own #2-3
+
+2. Write a function to give choices about year, county, and variables (using tidycensus package)
+3. Use your function from (2) along with `map` and `list_rbind` to build a data set for Rice county for the years 2019-2021
+07_apis.qmd: OMDB example - obtain a key and assemble your own well-formatted 5x5 tibble with 5 movies of your choosing and 5 variables of your choosing (see what else is available)
+
+
+2. Write a function to give choices about year, county, and variables
+```{r}
+# function to allow user inputs
+
+MN_tract_data <- function(year, county, variables) {
+  tidycensus::get_acs(
+    Sys.sleep(0.5),
+    year = year,
+    state = "MN",
+    geography = "tract",
+    variables = variables,
+    output = "wide",
+    geometry = TRUE,
+    county = county
+  ) |>
+    mutate(year = year)
+}
+
+# Should really build in checks so that county is in MN, year is in 
+#   proper range, and variables are part of ACS1 data set
+
+my_data <- MN_tract_data(year = 2021,
+              county = "Hennepin", 
+              variables = c("B01003_001", "B19013_001"))
+
+ggplot(data = my_data) + 
+  geom_sf(aes(fill = B01003_001E), colour = "white", linetype = 2)
+
+my_data <- MN_tract_data(year = 2022,
+              county = "Rice", 
+              variables = c("B01003_001", "B19013_001"))
+
+ggplot(data = my_data) + 
+  geom_sf(aes(fill = B01003_001E), colour = "white", linetype = 2)
+
+# Try other variables:
+#  - B25077_001 is median home price
+#  - B02001_002 is number of white residents
+#  - etc.
+# alt
+```
+
+3. Use your function from (2) along with `map` and `list_rbind` to build a data set for Rice county for the years 2019-2021
+```{r}
+# To examine trends over time in Rice County
+2019:2021 |>
+  purrr::map(\(x) 
+    MN_tract_data(
+      x,
+      county = "Rice", 
+      variables = c("B01003_001", "B19013_001")
+    )
+  ) |>
+  list_rbind()
+
+# Or a little more simply
+2019:2021 |>
+  purrr::map(MN_tract_data,
+             county = "Rice", 
+             variables = c("B01003_001", "B19013_001")
+            ) |>
+  list_rbind()
+```
+
+08_table_scraping.qmd: On Your Own #2.2-2.4
+
+2. We would like to create a tibble with 4 years of data (2001-2004) from the Minnesota Wild hockey team.  Specifically, we are interested in the "Scoring Regular Season" table from this webpage: https://www.hockey-reference.com/teams/MIN/2001.html and the similar webpages from 2002, 2003, and 2004.  Your final tibble should have 6 columns:  player, year, age, pos (position), gp (games played), and pts (points).
+
+You should (a) write a function called `hockey_stats` with inputs for team and year to scrape data from the "scoring Regular Season" table, and (b) use iteration techniques to scrape and combine 4 years worth of data.  Here are some functions you might consider:
+
+- `row_to_names(row_number = 1)` from the `janitor` package
+- `clean_names()` also from the `janitor` package
+- `bow()` and `scrape()` from the `polite` package
+- `str_c()` from the `stringr` package (for creating urls with user inputs)
+- `map2()` and `list_rbind()` for iterating and combining years
+
+Try following these steps:
+
+[SKIP] 1) Be sure you can find and clean the correct table from the 2021 season.
+
+2) Organize your `rvest` code from (1) into functions from the `polite` package.
+
+3) Place the code from (2) into a function where the user can input a team and year.  You would then adjust the url accordingly and produce a clean table for the user.
+
+4) Use `map2` and `list_rbind` to build one data set containing Minnesota Wild data from 2001-2004.
+09_web_scraping.qmd Pause to Ponder - 3 items on NIH News Releases right before the On Your Own section (see qmd file for code)
+
+Create a function to scrape a single NIH press release page by filling missing pieces labeled `???`
+Use a for loop over the first 5 pages
+Use map functions in the purrr package
