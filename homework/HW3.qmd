@@ -1,0 +1,267 @@
+---
+title: "HW #3"
+author: "Gwynyn Hayes"
+format: pdf
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: FALSE
+#| warning: FALSE
+#| error: FALSE
+
+library(tidyverse)
+library(stringr)
+library(httr2)
+library(httr)
+library(rvest)
+library(polite)
+library(maps)
+library(viridis)
+library(leaflet)
+library(htmltools)
+library(janitor)
+```
+
+07_apis.qmd: On Your Own #2-3
+
+```{r}
+# function to allow user inputs
+
+MN_tract_data <- function(year, county, variables) {
+  tidycensus::get_acs(
+    Sys.sleep(0.5),
+    year = year,
+    state = "MN",
+    geography = "tract",
+    variables = variables,
+    output = "wide",
+    geometry = TRUE,
+    county = county
+  ) |>
+    mutate(year = year)
+}
+
+# Should really build in checks so that county is in MN, year is in 
+#   proper range, and variables are part of ACS1 data set
+
+my_data <- MN_tract_data(year = 2021,
+              county = "Hennepin", 
+              variables = c("B01003_001", "B19013_001"))
+
+ggplot(data = my_data) + 
+  geom_sf(aes(fill = B01003_001E), colour = "white", linetype = 2)
+
+my_data <- MN_tract_data(year = 2022,
+              county = "Rice", 
+              variables = c("B01003_001", "B19013_001"))
+
+ggplot(data = my_data) + 
+  geom_sf(aes(fill = B01003_001E), colour = "white", linetype = 2)
+
+# Try other variables:
+#  - B25077_001 is median home price
+#  - B02001_002 is number of white residents
+#  - etc.
+# alt
+```
+
+```{r}
+# To examine trends over time in Rice County
+2019:2021 |>
+  purrr::map(\(x) 
+    MN_tract_data(
+      x,
+      county = "Rice", 
+      variables = c("B01003_001", "B19013_001")
+    )
+  ) |>
+  list_rbind()
+
+# Or a little more simply
+2019:2021 |>
+  purrr::map(MN_tract_data,
+             county = "Rice", 
+             variables = c("B01003_001", "B19013_001")
+            ) |>
+  list_rbind()
+```
+
+
+OMDB 
+```{r}
+#| eval: FALSE
+
+# I used the first line to store my OMDB API key in .Renviron
+# Sys.setenv(OMDB_KEY = "98cc43c7")
+myapikey <- Sys.getenv("OMDB_KEY")
+
+# Find url exploring examples at omdbapi.com
+url <- str_c("http://www.omdbapi.com/?t=Coco&y=2017&apikey=", myapikey)
+
+coco <- GET(url)   # coco holds response from server
+coco               # Status of 200 is good!
+
+details <- content(coco, "parse")   
+details                         # get a list of 25 pieces of information
+details$Year                    # how to access details
+details[[2]]     
+
+``` 
+
+```{r}
+#| message: FALSE
+#| eval: FALSE
+
+# Must figure out pattern in URL for obtaining different movies
+#  - try searching for others
+movies <- c("The+Pirate+Fairy", "Knives+Out", "Fighting+with+my+Family", "The+Princess+Diaries", "The+Age+of+Adaline")
+
+# Set up empty tibble
+omdb <- tibble(Title = character(), Language = character(), Writer = character(),
+       Awards = character(), Plot = character())
+
+# Use for loop to run through API request process 5 times,
+#   each time filling the next row in the tibble
+#  - can do max of 1000 GETs per day
+for(i in 1:5) {
+  url <- str_c("http://www.omdbapi.com/?t=", movies[i],
+               "&apikey=", myapikey)
+  Sys.sleep(0.5)
+  onemovie <- GET(url)
+  detail <- content(onemovie, "parse")
+  omdb[i,1] <- detail$Title
+  omdb[i,2] <- detail$Language
+  omdb[i,3] <- detail$Writer
+  omdb[i,4] <- detail$Awards
+  omdb[i,5] <- detail$Plot
+}
+
+omdb
+
+#  could use stringr functions to further organize this data - separate 
+#    different genres, different actors, etc.
+```
+
+08_table_scraping.qmd: On Your Own #2.2-2.4
+
+2.  We would like to create a tibble with 4 years of data (2001-2004) from the Minnesota Wild hockey team. Specifically, we are interested in the "Scoring Regular Season" table from this webpage: https://www.hockey-reference.com/teams/MIN/2001.html and the similar webpages from 2002, 2003, and 2004. Your final tibble should have 6 columns: player, year, age, pos (position), gp (games played), and pts (points).
+
+You should (a) write a function called `hockey_stats` with inputs for team and year to scrape data from the "scoring Regular Season" table, and (b) use iteration techniques to scrape and combine 4 years worth of data. Here are some functions you might consider:
+
+-   `row_to_names(row_number = 1)` from the `janitor` package
+-   `clean_names()` also from the `janitor` package
+-   `bow()` and `scrape()` from the `polite` package
+-   `str_c()` from the `stringr` package (for creating urls with user inputs)
+-   `map2()` and `list_rbind()` for iterating and combining years
+
+Try following these steps:
+
+\[SKIP\] 1) Be sure you can find and clean the correct table from the 2021 season.
+
+2)  Organize your `rvest` code from (1) into functions from the `polite` package.
+
+3)  Place the code from (2) into a function where the user can input a team and year. You would then adjust the url accordingly and produce a clean table for the user.
+
+4)  Use `map2` and `list_rbind` to build one data set containing Minnesota Wild data from 2001-2004. 
+
+```{r}
+hockey_stats <- function(team, year) {
+  # Build the URL
+  base_url <- str_c("https://www.hockey-reference.com/teams/", team, "/", year, ".html")
+  
+  session <- bow(base_url)
+  page <- scrape(session)
+  
+  table_node <- html_node(page, css = "table")
+  
+  
+  table <- html_table(table_node, header = TRUE, fill = TRUE)[[4]]
+  
+  table_clean <- table |>
+    select(player, age, pos, gp, pts) |>
+    mutate(year = year) |>
+    relocate(year, .before = player) |>
+    filter(!is.na(player))
+
+  return(table_clean)
+}
+
+```
+
+```{r
+years <- 2001:2004
+team <- "MIN"
+
+all_data <- map2(team, years, hockey_stats) |>
+  list_rbind()
+
+print(all_data)
+```
+
+09_web_scraping.qmd Pause to Ponder - 3 items on NIH News Releases right before the On Your Own section (see qmd file for code)
+
+```{r}
+#| eval: FALSE
+
+# Helper function to reduce html_nodes() |> html_text() code duplication
+get_text_from_page <- function(page, css_selector) {
+  page |>
+    html_nodes(css_selector) |>
+    html_text()
+}
+
+# Main function to scrape and tidy desired attributes
+scrape_page <- function(url) {
+    Sys.sleep(2)
+    page <- read_html(url)
+    article_titles <- get_text_from_page(page, ".teaser-title")
+    article_dates <- get_text_from_page(page, ".date-display-single")
+    article_dates <- mdy(article_dates)
+    article_description <- get_text_from_page(page, ".teaser-description")
+    article_description <- str_trim(str_replace(article_description, ".*\\n", ""))
+    
+    tibble(
+      title = article_titles,  
+      pub_date = article_dates,
+      description = article_description
+    )
+}
+```
+
+
+**[Pause to Ponder:]** Use a for loop over the first 5 pages:
+
+
+** Said it could find function even though it runs and works properly
+```{r 
+pages <- vector("list", length = 6)
+pos <- 0
+
+for (i in 2025:2024) {
+  for (j in 0:2) {
+    pos <- pos + 1
+    url <- str_c("https://www.nih.gov/news-events/news-releases?", i,
+                 "&page=", j, "&1=")
+    pages[[pos]] <- scrape_page(url)
+  }
+}
+
+df_articles <- bind_rows(pages)
+head(df_articles)
+```
+
+
+**[Pause to Ponder:]** Use map functions in the purrr package:
+
+```{r}
+#| eval: FALSE
+base_url <- "https://www.nih.gov/news-events/news-releases?page="
+urls_all_pages <- c(base_url, str_c(base_url, 1:5))
+
+pages2 <- purrr::map(urls_all_pages, scrape_page)
+df_articles2 <- bind_rows(pages2)
+head(df_articles2)
+```

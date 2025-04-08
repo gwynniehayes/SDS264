@@ -3,7 +3,7 @@ title: "R Tip of the Day"
 subtitle: "Fun random plots and graphs you are never going to use!"
 author: Gwynnie Hayes
 format: revealjs
-editor: visual
+editor: source
 editor_options: 
   chunk_output_type: console
 ---
@@ -25,9 +25,9 @@ salmon_stomachs <- read_csv("~/Desktop/15/SDS264/r tip of the day/Data/salmon_st
 
 Beeswarm plots allow you to visualize the distribution of data on a single axis while still looking at the individual data points
 
-- Visualizes overlapping data easily
+-   Visualizes overlapping data easily
 
-- Displays smaller data sets well!
+-   Displays smaller data sets well!
 
 ## ggbeeswarm
 
@@ -88,17 +88,18 @@ Beeswarm plots have a fairly limited scope of use on their own but when you can 
 
 ## Streamgraph
 
-Streamgraphs are used to visualize data over time, they easily show trends in data. 
+Streamgraphs are used to visualize data over time, they easily show trends in data.
 
-- They are useful with large data sets
+-   They are useful with large data sets
 
-- They are often visually appealing so useful if presenting data to a non-data audience
+-   They are often visually appealing so useful if presenting data to a non-data audience
 
 ```{r}
 library(ggstream)
 ```
 
 ## ggstreamgraph
+
 ``` r
 library(ggstream)
 
@@ -126,24 +127,23 @@ salmon_stomachs |>
 
 ## Why you wouldn't use it!
 
-- Legibility of specific values is difficult
+-   Legibility of specific values is difficult
 
-- Gets very cluttered very easily
+-   Gets very cluttered very easily
 
-- Negative values are not supported
+-   Negative values are not supported
 
-- Require a time variable or they don't really make sense
+-   Require a time variable or they don't really make sense
 
 Streamgraphs are pretty cool looking if you can find a use for one!
 
-
 ## Radar or Spider Chart
 
-- Radar charts are useful to represent multivariate data
+-   Radar charts are useful to represent multivariate data
 
-- Easily highlights extremes in the data
+-   Easily highlights extremes in the data
 
-- Looks at individual observations in the data and compares them to others
+-   Looks at individual observations in the data and compares them to others
 
 ## ggradar
 
@@ -170,10 +170,9 @@ ggradar(radar_data,
         group.point.size = 3,
         background.circle.colour = "white",
         legend.title = "Salmon ID Number")           
-
 ```
 
-##
+## 
 
 ```{r}
 library(ggradar)
@@ -203,12 +202,10 @@ ggradar(radar_data,
 
 ## Why you probably won't use it
 
-- There is no ggradar package that is compatible with ggplot, so its a lot more difficult to make then it is useful
+-   There is no ggradar package that is compatible with ggplot, so its a lot more difficult to make then it is useful
 
-- Easily cluttered, can't handle large data sets
+-   Easily cluttered, can't handle large data sets
 
-- Lines on the plots have no significance and can lead to confusion
+-   Lines on the plots have no significance and can lead to confusion
 
 ## Thanks!
-
-
