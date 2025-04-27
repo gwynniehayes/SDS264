@@ -1,0 +1,61 @@
+Song,lyric
+"""December""",walked 'round the block a thousand times
+"""December""",you missed every call that i had tried
+"""December""",so now i'm giving up
+"""December""",a heartbreak in mid december
+"""December""",you don't give a fuck
+"""December""",you never remember me
+"""December""",while you're pulling on his jeans
+"""December""",getting lost in the big city
+"""December""",i was looking out your window
+"""December""",watching all the cars go
+"""December""",wondering if i'll see chicago
+"""December""",or a sunset on the west coast
+"""December""",or will i die in the cold?
+"""December""",feeling blue and alone
+"""December""",i wonder if you'll ever hear this song on your stereo
+"""December""",i hope you get your ballroom floor
+"""December""",your perfect house with rose red doors
+"""December""",i'm the last thing you'd remember
+"""December""","it's been a long, lonely december"
+"""December""",i wish i'd known that less is more
+"""December""",but i was passed out on the floor
+"""December""",and that's the last thing i remember
+"""December""","it's been a long, lonely december"
+"""December""",cast me aside to show yourself in a better light
+"""December""","i came out grieving, barely breathing and you came out alright"
+"""December""",but i'm sure you'll take his hand
+"""December""",i hope he's better than i ever could have been
+"""December""",my mistakes were not intentions this is a list of my confessions i couldn't say
+"""December""",pain is never permanent but tonight it's killing me
+"""December""",i hope you get your ballroom floor
+"""December""",your perfect house with rose red doors
+"""December""",i'm the last thing you'd remember
+"""December""","it's been a long, lonely december"
+"""December""",i wish i'd known that less is more
+"""December""",but i was passed out on the floor
+"""December""",and that's the last thing i remember
+"""December""","it's been a long, lonely december"
+"""December""",i miss your face
+"""December""",you're in my head
+"""December""",there's so many things that i should have said
+"""December""","a year of suffering, a lesson learned"
+"""December""",i miss your face (miss your face)
+"""December""",you're in my head
+"""December""",there's so many things that i should have said (you're in my head)
+"""December""","a year of suffering, a lesson learned"
+"""December""",i hope you get your ballroom floor
+"""December""",your perfect house with rose red doors
+"""December""",i'm the last thing you'd remember
+"""December""","it's been a long, lonely december"
+"""December""","(i miss you, i wish you well) i wish i'd known that less is more"
+"""December""",but i was passed out on the floor (i miss you but i wish you well)
+"""December""","(i miss you, i miss you) and that's the last thing i remember"
+"""December""","it's been a long, lonely december"
+"""December""",if  ( /android|webos|iphone|ipod|ipad|blackberry|iemobile|opera mini/i.test(navigator.useragent) ) 
+"""December""",  {
+"""December""",     document.getelementbyid('azmxmbanner').style.display='block';
+"""December""","     document.write('<div style=""margin-left: auto; margin-right: auto;"">'+"
+"""December""","  '<iframe scrolling=""no"" style=""border: 0px none; overflow:hidden;"" src=""//adv.mxmcdn.net/br/t1.0/dfd9gogocmskm2rjwzjth0h7mhmh9tbw/24pkhf8q53rr2n8ve0b0h4eym+2npkkedcgqccjrqs4jqczdim0i0uipd9sjlz+jw0h2a2hslxlcjt9g8wr2nhjqvb+yg3qvgwbz3vyhx1bquk1uayqtlgholgldpfhr2yuhrllpqm=/?artist_name=illuminati+hotties&track_name=december&s=7d3c2b7efa96a9dd9ab3f5147c566ab6"" width=""290px"" height=""50px""></iframe>'+"
+"""December""",  '</div>');
+"""December""",   }

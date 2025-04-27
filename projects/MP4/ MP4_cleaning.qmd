@@ -1,0 +1,150 @@
+---
+title: "MP4"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+#| include: FALSE
+#| warning: FALSE
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(polite)
+library(rvest)
+library(stringr)
+library(tibble)
+library(purrr)
+```
+
+```{r}
+get_text_from_page <- function(page, css_selector) {
+  page |>
+    html_nodes(css_selector) |>
+    html_text(trim = TRUE)
+}
+scrape_song <- function(url) {
+    page <- read_html(url)
+    song_name <- get_text_from_page(page,".ringtone+ b")
+    song_lyrics <- get_text_from_page(page, "br+ div")
+    
+    tibble(
+      Song = song_name,  
+      lyrics = song_lyrics
+    )
+}
+songs <- c("december")
+
+base_url <- "https://www.azlyrics.com/lyrics/illuminatihotties/"
+urls <- str_c(base_url, songs, ".html")
+
+safe_scrape <- function(url) {
+  Sys.sleep(runif(1, 1, 2))  # wait 1–2 seconds
+  scrape_song(url)
+}
+
+genius <- map_df(urls, safe_scrape)
+
+ihsong <- genius |>
+  unnest_tokens("lyric", "lyrics", token = "lines") 
+
+#write_csv(ihsong, "~/Desktop/15/SDS264/projects/MP4/data/ihsong.csv")
+```
+
+```{r}
+ihsongslist <- list(read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs2.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs3.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs4.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs5.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs6.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs7.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs8.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs9.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsongs.csv"),
+read_csv("~/Desktop/15/SDS264/projects/MP4/data/ihsong.csv"))
+
+full_ihsongs <- bind_rows(ihsongslist)
+```
+
+```{r}
+ihsongs <- full_ihsongs |>
+  mutate(Song = str_replace_all(Song, '"', " ")) |>
+  filter(
+         lyric != "if  ( /android|webos|iphone|ipod|ipad|blackberry|iemobile|opera mini/i.test(navigator.useragent) )", 
+         lyric != "{",
+         lyric != "}", 
+         lyric != "document.getelementbyid('azmxmbanner').style.display='block';", 
+         lyric != "'</div>');", 
+         lyric != "document.write('<div style=\"margin-left: auto; margin-right: auto;\">'+", 
+         !str_detect(lyric, fixed('<iframe scrolling="no" style="border: 0px none; overflow:hidden;" src="//adv.mxmcdn.net')))
+```
+
+```{r}
+ihsongs_albums <- ihsongs |>
+  mutate(album = ifelse(Song %in% c(" Pool Hopping ",
+                " MMMOOOAAAAAYAYA ",
+                " Knead ",
+                " Threatening Each Other re: Capitalism ",
+                " u v v p ",
+                " Protector ",
+                " Joni: LA's No. 1 Health Goth ",
+                " Kickflip ",
+                " Toasting ",
+                " The Sway ",
+                " Cheap Shoes ",
+                " Growth "), "let me do one more",
+    ifelse(Song %in% c(" (You're Better) Than Ever ",
+                " Cuff ",
+                " Paying Off The Happiness ",
+                " Patience ",
+                " Kiss Yr Frenemies ",
+                " Shape Of My Hands ",
+                " For Cheez (My Friend, Not The Food) ",
+                " The Rules ",
+                " boi ",
+                " Pressed 2 Death ",
+                " Declutter "),"Kiss Yr Frenemies", 
+           ifelse(Song %in% c(" Can't Be Still ",
+                " I Would Like, Still Love You ",
+                " Throw (Life Raft) ",
+                " Rot ",
+                " Falling In Love With Somebody Better ",
+                " The L ",
+                " Sleeping In ",
+                " Didn't ",
+                " You Are Not Who You Were ",
+                " What's the Fuzz ",
+                " YSL ",
+                " Power ",
+                " Everything Changes "), "Power", 
+                ifelse(Song %in% c(" 777 ",
+                " Wreck My Life "),"Nickel on the Fountain Floor", 
+           ifelse(Song %in% c(
+                " will i get cancelled if i write a song called,  if you were a man you'd be so cancelled ",
+                " free ppls ",
+                " freequent letdown ", 
+                " melatonezone ",
+                " WATTBL ",
+                " free dumb ",
+                " content//bedtime ",
+                " free4all ",
+                " b yr own b ",
+                " K - HOT AM 818 ",
+                " superiority complex (big noise) ",
+                " reasons 2 live "),"FREE I.H: This Is Not the One You’ve Been Waiting For", 
+           ifelse(Song %in% c(" I Wanna Keep Yr Dog ",
+                " I Wanna Dance With Somebody (Who Loves Me) ",
+                " Sandwich Sharer ",
+                " Truck ",
+                " ppl plzr ", 
+                " December "), "Single", "other")))))))
+
+```
+
+
+```{r}
+write_csv(ihsongs_albums, "~/Desktop/15/SDS264/projects/MP4/data/final_ihsongs.csv")
+```
+
+
