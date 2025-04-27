@@ -8,11 +8,11 @@ format:
   html:
     code-links:
       - text: Cleaning Code
-        href: https://github.com/gwynniehayes/gwynniehayes.github.io/blob/main/index.qmd
+        href: https://github.com/gwynniehayes/SDS264/blob/main/projects/MP4/%20MP4_cleaning.qmd
+      - text: Document Code
+        href: https://github.com/gwynniehayes/SDS264/blob/main/projects/MP4/MP4.qmd
+
 ---
-
-# Change cleaning code link!!
-
 ```{r}
 #| include: FALSE
 #| warning: FALSE
@@ -32,7 +32,6 @@ library(ggraph)
 library(igraph)
 ```
 
-
 ```{r}
 #| echo: FALSE
 #| warning: FALSE
@@ -45,11 +44,15 @@ ih_songs <- read_csv("~/Desktop/15/SDS264/projects/MP4/data/final_ihsongs.csv") 
   group_by(album)
 ```
 
+------------------------------------------------------------------------
+
 # Introduction
 
 One of my favorite bands is called Illuminati Hotties, what I love about them is that all the songs are very different and unique. The main artist is named Sarah Tudzin and in her professional life she is a music producer for many much more popular artists. She also writes and produces her own music and what I think is really cool about it is she just has fun making a bunch of cool and unique sounds, that aren't dictated by someone else.
 
 Some of my friends and I went to a concert for another artist called Pom Pom Squad almost 6 years ago at this point where we were first introduced to her and have been hooked ever since, one of the things we always talk about is the uniqueness of her music and the interesting and sometimes slightly disturbing lyrics she uses in her songs. This led me to wanting to do a text analysis of her song lyrics.
+
+------------------------------------------------------------------------
 
 # Data!
 
@@ -64,6 +67,8 @@ kable(head(ih_songs))
 ```
 
 This is what the data set looks like after I read it into this document and did some final cleaning!
+
+------------------------------------------------------------------------
 
 Illuminati Hotties have 5 albums and a couple singles that I am analyzing together as one "album".
 
@@ -89,16 +94,19 @@ Illuminati Hotties have 5 albums and a couple singles that I am analyzing togeth
 :::
 ::::::::
 
+------------------------------------------------------------------------
+
 # Questions
 
 Some things I want to explore with in this data set are:
 
-- Most common words in general, in each song and in each album
-- Is power more similar to itself then the other albums?   
-- Sentient analysis of each album
-- Network Graph and Correlation
+-   Most common words in general, in each song and in each album
+-   Sentient analysis of each album
+-   Network Graph and Correlation
 
-# Text Analysis
+------------------------------------------------------------------------
+
+# Word Counts
 
 I first wanted to just look at the most common word in all of her songs in general and found what was expected, words like "I", "you" and "the" were the most commonly used words.
 
@@ -115,7 +123,6 @@ ih_songs |>
   kable("html", align = 'clc', caption = 'Most Common Words for All Songs') |>
     kable_styling(full_width = T)
 ```
-
 
 To look at just the most common useful words I anti_joined my data set with the set of of smart stop words. Also some of the most common words are not full words and are sounds as words, so I filtered them out using str functions and then looked at the most common words in each album again.
 
@@ -197,6 +204,8 @@ smartFreeIH |>
   scale_fill_brewer(palette = "Dark2") + theme_linedraw() +
   labs(x = "Word Count", y = "Word", title = "10 Most Common Words in Each Album")
 ```
+
+------------------------------------------------------------------------
 
 # Sentiment Analysis
 
@@ -282,6 +291,8 @@ IH_sentiment_score |>
   labs(title = "Sentiment Scores for Each Song by Album (affin Sentiments)", x = "Song", y = "Sentiment")
 ```
 
+------------------------------------------------------------------------
+
 # Correlations
 
 I also wanted to look at the correlations between some of the most common words in the songs.
@@ -335,14 +346,10 @@ word_cors |>
   labs(title = "Correlation Network of Words in All Songs", x = " ", y = " ")
 ```
 
-
 # Fun Fact!!
 
 In the song "Pool Hopping" the first verse goes:
 
-In every life there is a bell
-One rounded curve of time or tell
-I'm on the left half looking
-Over, over, over, uh-huh
+In every life there is a bell One rounded curve of time or tell I'm on the left half looking Over, over, over, uh-huh
 
 Referencing being on the left side of a a bell curve! That's statistical and semi-relevant!
