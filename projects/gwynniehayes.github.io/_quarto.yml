@@ -1,19 +1,25 @@
 project:
   type: website
+  output-dir: docs
 
 website:
-  title: "gwynniehayes.github.io"
+  title: "Gwynnie's Epic Website!"
   navbar:
-    left:
+    right:
       - href: index.qmd
-        text: Home
-      - about.qmd
-
+      - href: about.qmd
+      - href: tabs/who_is_gwynnie.qmd
+      - text: Projects
+        menu: 
+          - tabs/miniproj1.qmd
+          - tabs/miniproj2.qmd
+          - tabs/salmon_tummys.Rmd
+          - tabs/mp4.qmd
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: styles.scss 
     toc: true
+    page-layout: full
+    mainfont: Nanum Myeongjo
 
 editor: visual
-

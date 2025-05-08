@@ -1,0 +1,136 @@
+---
+title: "Who Even is This?"
+about: 
+  template: solana
+toc: false
+search: false
+editor_options: 
+  chunk_output_type: console
+  viewer: Source
+---
+
+![](media/gwynnie.jpeg){.rounded-img width="3.09in"}
+
+::: text-center
+My name is Gwynnie! (she/her)
+
+I am a junior Computer Science major with concentrations in Statistics and Data Science and Environmental Studies! I really like data and making things!
+:::
+
+------------------------------------------------------------------------
+
+::: text-center
+I work in the costume shop making clothes for the theater and dance departments
+:::
+
+![](media/costume1.jpeg){.rounded-img width="2.86in"}
+
+::: text-center
+This is the most recent thing I've made at work!
+:::
+
+------------------------------------------------------------------------
+
+::: text-center
+My favorite animal is a pacific chorus frog because they are simply the best!
+:::
+
+![](media/menfrog.jpg){.rounded-img width="333"}
+
+::: text-center
+MY FROGGY FRIEND!
+:::
+
+::: text-center
+However I think the most interesting frog is the pumpkin toadlet or Spix's Saddleback toad! It's a really small bright orange frog that has no right being a frog!
+:::
+
+![](media/pumpkintoadlet.jpeg){.rounded-img width="3in"}
+
+::: text-center
+Pumpkin Toadlet!
+:::
+
+------------------------------------------------------------------------
+
+::: text-center
+A fun fact about me is I have a twin brother! He is very tall and likes to point it out at every opportunity.
+:::
+
+![](media/twin.jpeg){.rounded-img width="224"}
+
+------------------------------------------------------------------------
+
+::: text-center
+I also really like to cook and bake!
+
+Here's some things I've made!
+:::
+
+## Cakes!
+
+:::::::: columns
+::: {.column width="20%"}
+![Chocolate Birthday Cake](media/cake1.jpeg)
+:::
+
+::: {.column width="20%"}
+![Lemon Raspberry Cake with Swiss Meringue Buttercream](media/cake2.JPG)
+:::
+
+::: {.column width="20%"}
+![Vanilla Cake with Swiss Meringue Buttercream](media/cake3.jpeg)
+:::
+
+::: {.column width="20%"}
+![Monster Cake](media/cake5.jpeg)
+:::
+
+::: {.column width="20%"}
+![Giant 7 Layer Rainbow Cake](images/IMG_6262-01.jpeg)
+:::
+::::::::
+
+## Macarons!
+
+::::::: columns
+::: {.column width="25%"}
+![Orange Strawberry Macaron](media/macaron1.jpeg)
+:::
+
+::: {.column width="25%"}
+![Lemon Blackberry Macaron](media/macaron3.jpeg)
+:::
+
+::: {.column width="25%"}
+![Chocolate Macarons](media/macaron4.jpg)
+:::
+
+::: {.column width="25%"}
+![Chocolate Caramel, Peppermint and Macarons](media/IMG_5564.jpeg)
+:::
+:::::::
+
+## Other Culinary Endeavors!
+
+:::::::: columns
+::: {.column width="20%"}
+![Creampuffs with Aria being silly!](media/creampuffs.jpeg)
+:::
+
+::: {.column width="20%"}
+![Crepe](media/crepe.jpeg)
+:::
+
+::: {.column width="20%"}
+![Ravioli also made with Aria](media/ravioli.jpeg)
+:::
+
+::: {.column width="20%"}
+![Peppermint Waffle Cone Cookies](media/wafflecookies.jpeg)
+:::
+
+::: {.column width="20%"}
+![Pizza! A Family Specialty!](media/pizza.jpeg)
+:::
+::::::::

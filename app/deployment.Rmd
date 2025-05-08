@@ -1,0 +1,10 @@
+---
+title: "deployment"
+output: html_document
+---
+
+
+```{r}
+library(rsconnect)
+rsconnect::deployApp("shinywebsite.Rmd")
+```

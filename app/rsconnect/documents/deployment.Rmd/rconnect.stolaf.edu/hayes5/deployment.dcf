@@ -1,0 +1,12 @@
+name: deployment
+title: deployment
+username: hayes5
+account: hayes5
+server: rconnect.stolaf.edu
+hostUrl: https://rconnect.stolaf.edu/__api__
+appId: 970
+bundleId: 2659
+url: https://rconnect.stolaf.edu/content/bc866c92-238e-4cb7-a674-a30dd66e066d/
+version: 1
+asMultiple: TRUE
+asStatic: FALSE

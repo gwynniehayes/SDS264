@@ -1,11 +1,43 @@
 ---
-title: "gwynniehayes.github.io"
+title: "Homie Page"
+
+toc: false
+search: false
+about: 
+  template: jolla
+  image-shape: rounded
+  image-width: 20em
+  links:
+    - text: Github
+      href: https://github.com/gwynniehayes/gwynniehayes.github.io
+    - text: Email Me
+      href: mailto:hayes5@stolaf.edu
+  
+editor_options: 
+  chunk_output_type: console
+  viewer: Source
 ---
 
-This is a Quarto website.
+::: text-center
+(homie page, its like a home page but better!)
+:::
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+## Benny! {.text-center}
 
-```{r}
-1 + 1
-```
+![](tabs/media/benny.jpeg){.rounded-img width="409"}
+
+::: text-center
+This is Benny!
+
+He is really fuzzy and large!
+:::
+
+## Walter! {.text-center}
+
+![](tabs/media/walter.jpeg){.rounded-img width="409"}
+
+::: text-center
+This is Walter!
+
+He is very loud. (It's annoying)
+:::

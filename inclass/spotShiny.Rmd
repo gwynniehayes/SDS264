@@ -1,0 +1,86 @@
+---
+title: "Spotify Shiny App"
+date: "2025-04-29"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+Dancy Dancing
+==========================
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+spotify <- read_csv("~/Desktop/15/SDS264/data/spotify.csv")
+
+spot_smaller <- spotify |>
+  select(
+    title, 
+    artist, 
+    album_release_date, 
+    album_name, 
+    subgenre, 
+    playlist_name
+  )
+```
+
+
+Inputs {.sidebar}
+-------------------------
+
+```{r eruptions, echo=FALSE}
+inputPanel(
+  selectInput("scatterploty", label = "y-axis variable:",
+    choices = c("Danceability" = "danceability",
+                "Energy" = "energy",
+                "Valence" = "valence"))
+)
+```
+
+Columns 
+------------------------
+
+```{r}
+renderPlot({
+  ggplot(spotify, aes(x = artist, y = .data[[input$scatterploty]])) +
+    geom_col() +
+    theme(axis.text.x = element_text(angle = 75, hjust = 1))
+})
+```
+
+
+Artist Popularity
+=======================
+
+Inputs{.sidebar}
+---------------
+```{r}
+spot_date <- spotify |>
+  mutate(album_release_date = str_extract(album_release_date, "\\d{4}"))
+
+inputPanel(
+  selectInput("pickartist", label = "Artist",
+                choices = spot_date$artist),
+  
+  selectInput("fillvar", label = "X Variable",
+             choices = c("Genre" = "genre",
+             "Popularity" = "popularity",
+             "Album Name" = "album_name"))
+  )
+
+```
+
+Columns 
+----------------
+```{r}
+
+renderPlot({
+  spot_date |>
+    filter(artist == input$pickartist) |>
+  ggplot(aes(x = album_release_date, fill = .data[[input$fillvar]], y = artist)) +
+    geom_col()
+})
+```
+
+
