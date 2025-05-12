@@ -1,0 +1,12 @@
+name: OSMApp
+title: OSMApp
+username: gwynyn
+account: gwynyn
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14731649
+bundleId: 10265970
+url: https://gwynyn.shinyapps.io/OSMApp/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

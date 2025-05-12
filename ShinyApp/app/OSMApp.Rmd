@@ -1,0 +1,53 @@
+---
+title: "Open Street Map Mapping"
+output: html_document
+runtime: shiny
+---
+
+```{r}
+#| echo: FALSE
+#| warning: FALSE
+
+library(osmdata)
+library(sf)
+library(ggplot2)
+library(prettymapr)
+library(ggspatial)
+```
+
+```{r}
+#| echo: FALSE
+#| warning: FALSE
+
+inputPanel(
+  textInput("place", "Enter a Location"), 
+  actionButton("plot", "Generate Plot"))
+```
+
+```{r}
+#| echo: FALSE
+#| warning: FALSE
+
+output$map <- renderPlot({
+  input$plot
+  isolate({
+    req(input$place)
+    
+    query <- opq(input$place) |> 
+      add_osm_feature(key = "building")
+    
+    data <- tryCatch(osmdata_sf(query), error = function(e) NULL)
+    
+    if (is.null(data) || is.null(data$osm_polygons)) {
+      plot.new()
+      text(0.5, 0.5, "No data found or invalid location")
+    } else {
+      ggplot() +
+        annotation_map_tile(type = "cartolight", zoom = 8) +
+        geom_sf(data = data$osm_polygons, fill = "darkgreen", color = NA)
+    }
+  })
+})
+
+plotOutput("map")
+```

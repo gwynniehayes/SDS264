@@ -1,7 +1,7 @@
 project:
   type: website
   output-dir: docs
-
+  
 website:
   title: "Gwynnie's Epic Website!"
   navbar:
@@ -9,14 +9,19 @@ website:
       - href: index.qmd
       - href: about.qmd
       - href: tabs/who_is_gwynnie.qmd
+      - href: csproject.qmd
       - text: Projects
         menu: 
           - tabs/miniproj1.qmd
           - tabs/miniproj2.qmd
           - tabs/salmon_tummys.Rmd
           - tabs/mp4.qmd
+
+
+        
 format:
   html:
+    standalone: TRUE
     theme: styles.scss 
     toc: true
     page-layout: full

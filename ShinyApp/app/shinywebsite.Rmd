@@ -1,0 +1,77 @@
+---
+title: "Fake Remote Sensing"
+output: html_document
+runtime: shiny
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(magick)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, echo=FALSE}
+inputPanel(
+  fileInput("file_upload", "Choose an image file", 
+            accept = c("image/png", "image/jpeg", "image/jpg")),
+  sliderInput("k", "Number of Clusters", min = 1, max = 8, value = 8),
+  actionButton("plot", "Generate Plot"))
+```
+
+```{r, warning=FALSE, echo=FALSE}
+fluidRow(
+  column(6, plotOutput("cluster_plot")),
+  column(6, tableOutput("cluster_table")))
+
+df_rgb_data <- reactiveVal(NULL)
+
+output$cluster_plot <- renderPlot({
+  req(input$plot)
+  req(input$file_upload)
+
+  img <- image_read(input$file_upload$datapath)
+  img <- image_resize(img, "100x100!")
+  img_raster <- as.raster(img)
+
+  df <- expand.grid(
+    x = 1:ncol(img_raster),
+    y = 1:nrow(img_raster)) |>
+    mutate(color = as.vector(img_raster))
+
+  rgb_vals <- col2rgb(df$color)
+  df_rgb <- df |>
+    mutate(
+      R = rgb_vals[1, ],
+      G = rgb_vals[2, ],
+      B = rgb_vals[3, ])
+
+  set.seed(42)
+  k_clusters <- input$k
+  kmeans_result <- kmeans(df_rgb[, c("R", "G", "B")], centers = k_clusters)
+  df_rgb$cluster <- factor(kmeans_result$cluster)
+
+  df_rgb_data(df_rgb)  # Save for table
+
+  ggplot(df_rgb, aes(x = x, y = -y, fill = cluster)) +
+    geom_tile() +
+    scale_fill_brewer(palette = "Dark2") +
+    coord_fixed() +
+    theme_void() +
+    labs(title = paste("Clustered Image with", k_clusters, "Colors"))})
+
+output$cluster_table <- renderTable({
+  req(df_rgb_data())
+  df_rgb_data() |>
+    count(cluster, name = "Pixels") |>
+    mutate(Proportion = paste0(round(100 * Pixels / sum(Pixels), 1), "%")) |>
+    arrange(desc(Pixels))})
+```
+
+```{r, warning=FALSE, echo=FALSE}
+renderImage({
+  req(input$file_upload)
+  list(
+    src = input$file_upload$datapath,
+    contentType = input$file_upload$type,
+    width = "50%",   # Resize the original image to 50% width
+    alt = "Uploaded Image")}, deleteFile = FALSE)
+```

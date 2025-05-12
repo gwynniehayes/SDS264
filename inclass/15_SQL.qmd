@@ -23,7 +23,7 @@ You can download this .qmd file from [here](https://github.com/joeroith/264_spri
 In this activity, we will follow closely to Ch 15 in MDSR.  When doing database queries I often allow chunk output to occur inline.
 
 
-```{r}
+```{r, warning=FALSE}
 library(tidyverse)
 library(mdsr)
 library(dbplyr)
@@ -32,7 +32,7 @@ library(DBI)
 
 Connect to St. Olaf's database server, where the flight_data database lives:
 
-```{r}
+```{r, warning=FALSE}
 library(RMariaDB)
 con <- dbConnect(
   MariaDB(), host = "mdb.stolaf.edu",
